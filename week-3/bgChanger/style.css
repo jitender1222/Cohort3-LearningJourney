@@ -1,0 +1,19 @@
+h1{
+    text-align: center;
+}
+
+.outer-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+button{
+    cursor: pointer;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+}
