@@ -35,6 +35,7 @@ const quizData = [{
 ]
 
 let nextQuestion=0;
+let total=0;
 const quizDiv=document.getElementById("quizDiv");
 const questionTitle=document.getElementById("questionTitle");
 const optionsList=document.querySelectorAll(".optionsList");
@@ -62,9 +63,17 @@ function moveNext() {
     } else {
         alert("Quiz Completed!");
         nextQuestion=0;
+        alert(`Your Score is ${total}`)
         loadQuestion();
     }
 }
 
+function checkIsCorrect(num){
+    if(num === quizData[nextQuestion].correct){ 
+        total++;
+    }
+    moveNext();
+}   
+console.log(total);
 // Load the first question on page load
 loadQuestion();

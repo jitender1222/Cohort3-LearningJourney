@@ -12,10 +12,10 @@
         <div id="quizDiv">
             <span id="questionTitle">Question : Which language runs in a web browser?</span>
             <ul id="option">
-                <button class="optionsList"> a: </button>
-                <button class="optionsList"> b: </button>
-                <button class="optionsList"> c: </button>
-                <button class="optionsList"> d: </button>
+                <button onclick="checkIsCorrect('a')"  class="optionsList"> a: </button>
+                <button onclick="checkIsCorrect('b')" class="optionsList"> b: </button>
+                <button onclick="checkIsCorrect('c')" class="optionsList"> c: </button>
+                <button onclick="checkIsCorrect('d')" class="optionsList"> d: </button>
             </ul>
             <button class="btnNext" onclick="moveNext()">Next</button>
         </div>
