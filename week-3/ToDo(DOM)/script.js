@@ -1,40 +1,61 @@
-const input=document.getElementById("input");
-const  addTodoBtn=document.getElementById("btn");
-const inputField=document.querySelector(".inputField");
-const innerDiv= document.getElementById("inner-div");
-addTodoBtn.addEventListener("click",function(){
-    if(inputField.value){
-        
-        let newTodo=document.createElement("div");
-        newTodo.classList.add("todo");
+const input = document.getElementById("input");
+const addTodoBtn = document.getElementById("btn");
+const inputField = document.querySelector(".inputField");
+const innerDiv = document.getElementById("inner-div");
 
-        const p=document.createElement("p");
-        p.classList.add("todoDesc")
-        newTodo.appendChild(p);
-        p.innerHTML=inputField.value
+let isEditing = false; // Flag to check if editing is in progress
+let todoBeingEdited = null; // To store the reference of the todo being edited
 
-        const editButton=document.createElement("button");
-        editButton.setAttribute("id","btn")
-        editButton.innerHTML="Edit Todo"
+addTodoBtn.addEventListener("click", function () {
+    if (inputField.value) {
+        if (isEditing && todoBeingEdited) {
+            // If editing, update the existing todo
+            const p = todoBeingEdited.querySelector("p");
+            p.innerHTML = inputField.value; // Update the todo description
+            inputField.value = ""; // Clear input field
+            addTodoBtn.innerHTML = "Add Todo"; // Reset button to add mode
+            isEditing = false; // Reset editing flag
+            todoBeingEdited = null; // Clear the reference
+        } else {
+            // If not editing, add a new todo
+            let newTodo = document.createElement("div");
+            newTodo.classList.add("todo");
 
-        const delButton=document.createElement("button");
-        delButton.setAttribute("id","btn")
-        delButton.setAttribute("class","delBTn");
-        delButton.innerHTML="Delete Todo"
+            const p = document.createElement("p");
+            p.classList.add("todoDesc");
+            newTodo.appendChild(p);
+            p.innerHTML = inputField.value;
 
-        p.appendChild(editButton);
-        p.appendChild(delButton)
+            const editButton = document.createElement("button");
+            editButton.setAttribute("id", "editBtn");
+            editButton.innerHTML = "Edit Todo";
 
-        innerDiv.appendChild(newTodo)
-        inputField.value="";
+            const delButton = document.createElement("button");
+            delButton.setAttribute("id", "delBtn");
+            delButton.innerHTML = "Delete Todo";
 
-        delButton.addEventListener("click",function(){
-            newTodo.parentNode.removeChild(newTodo);
-        })
+            // Append buttons to the new todo div
+            newTodo.appendChild(editButton);
+            newTodo.appendChild(delButton);
+
+            innerDiv.appendChild(newTodo);
+            inputField.value = "";
+
+            // Delete functionality
+            delButton.addEventListener("click", function () {
+                newTodo.remove();
+            });
+
+            // Edit functionality
+            editButton.addEventListener("click", function () {
+                inputField.value = p.innerHTML; // Set the input field to the todo text
+                addTodoBtn.innerHTML = "Update Todo"; // Change button text to "Update Todo"
+                isEditing = true; // Set editing mode
+                todoBeingEdited = newTodo; // Store reference to the current todo being edited
+                console.log(newTodo);
+            });
+        }
+    } else {
+        alert("Enter a value first");
     }
-    else{
-        alert("Eneter value first")
-    }
-})
-
-const delBtn=document.querySelector(".delBTn");
+});
