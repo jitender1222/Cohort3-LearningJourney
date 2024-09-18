@@ -1,0 +1,48 @@
+body{
+    background-color: black;
+}
+h1{
+    text-align: center;
+    color: aliceblue;
+}
+#input{
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+    border-radius: 8px;
+    color: white;
+    border: 1px solid green;
+    text-align: center;
+    height: 50vh;
+}
+#inner-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height:20vh;
+}
+.inputField{
+    padding: 10px;
+}
+#btn{
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    background-color: aqua;
+    border-radius: 5px;
+}
+
+#btn:hover{
+background-color: rgba(19, 237, 237, 0.639);
+color: white;
+}
+
+.todo{
+    border: 1px solid green;
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
