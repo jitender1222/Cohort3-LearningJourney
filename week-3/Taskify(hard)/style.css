@@ -1,0 +1,64 @@
+body{
+  font-family: sans-serif;
+}
+
+.outer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:10%;
+  gap: 20px;
+}
+
+.common{
+  width: 450px;
+}
+
+h3,h1{
+  text-align: center;
+}
+
+.createTodo{
+  display: flex;
+  justify-content: center;  
+  height:50px;
+}
+#todoBtn{
+  background-color: #e5944d;
+  border-radius: 6px;
+  border: none;
+  padding:20px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+#todoBtn:hover{
+  background-color: #ec7e1d;
+}
+#inputTodo{
+  padding: 12px;
+  width:170px;
+  border:1px solid #282b2b;
+  border-radius: 6px;
+  font-style: italic;
+}
+
+.tasks{
+  text-align: left;
+  font-style: italic;
+  padding:12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #00CCCD;
+  color: white;
+  height:50px;
+}
+.tasks:hover{
+  background-color: #3debeb;
+}
+
+.todosData{
+  display: flex;
+}

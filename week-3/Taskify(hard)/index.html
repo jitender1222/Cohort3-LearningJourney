@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>TaskMate</h1>
+    <div class="outer">
+        <div class="common" id="todo">
+            <h3>Todos</h3>
+         <div class="createTodo">
+            <div id="todosList"> 
+                <input id="inputTodo" placeholder="Enter task " />
+                <!-- <div id="listOfTodo">
+                    <p class="tasks">Hello this is my firdst todo</p>
+                <button id="todoBtn" onclick="deleteTodo()">Delete</button>
+                <button id="todoBtn" onclick="editTodo()">Edit</button>
+                </div> -->
+            </div>
+            <button onclick="addTodo()" id="todoBtn">Click To Add</button>
+        </div>
+        </div>
+        <div class="common" id="isComplete">
+            <h3>IsCompleted</h3>
+            <div id="droppableArea">
+                <p class="tasks">Hy completed todo</p>
+            </div>
+        </div>
+        <div class="common" id="inProgress">
+            <h3>InProgress</h3>
+            <div id="droppableArea">
+                <p class="tasks">hi compeoted torfo</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
