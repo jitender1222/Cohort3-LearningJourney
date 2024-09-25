@@ -18,7 +18,7 @@ function addTodo(){
         editBtn.setAttribute("id","todoBtn");
         delBtn.innerHTML="Delete";
         editBtn.innerHTML="Edit"
-        div.appendChild(delBtn);
+        div.appendChild(delBtn);        
         div.appendChild(editBtn);
         todos.appendChild(div);
     }
