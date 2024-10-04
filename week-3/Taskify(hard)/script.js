@@ -2,10 +2,12 @@ const todo=document.querySelector(".tasks");
 const inputTodo=document.getElementById("inputTodo");
 const todos=document.getElementById("todosList");
 const addTodoBtn=document.querySelector(".addTodo");
+let isEditing=false
+let existingTodo=null;
 console.log();
 
 function addTodo(){
-    if(inputTodo.value){
+    if(inputTodo.value && !isEditing){
         const div=document.createElement("div");
         const p=document.createElement("p");
 
@@ -31,6 +33,12 @@ function addTodo(){
         div.appendChild(editBtn);
         todos.appendChild(div);
     }
+    else if (inputTodo.value && isEditing){
+        existingTodo.innerHTML=inputTodo.value;
+        isEditing=false;
+        inputTodo.value="";
+        existingTodo=null;
+    }
     else{
         alert("First write some tasks")
     }
@@ -43,9 +51,11 @@ function deleteTodo(event){
 }
 
 function editTodo(event){
+    isEditing=true
     const todoItem = event.target.parentElement;
     const p = todoItem.querySelector("p"); // Get the <p> element
+    existingTodo=p;
     inputTodo.value = p.innerHTML;
-    const existingTodo=p.innerHTML;
     addTodoBtn.innerHTML="Update Todo";
+    console.log(existingTodo);
 }
