@@ -1,8 +1,5 @@
 const mongoose=require("mongoose");
-const ObjectId = Schema.ObjectId;
-
-
-mongoose.connect(process.env.connection_string);
+const ObjectId = mongoose.Schema.ObjectId;
 
 const userSchema=new mongoose.Schema({
     username:String,
