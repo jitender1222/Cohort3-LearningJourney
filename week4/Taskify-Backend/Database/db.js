@@ -2,7 +2,7 @@ const mongoose=require("mongoose");
 const ObjectId = Schema.ObjectId;
 
 
-mongoose.connect("mongodb+srv://jeetusinghkanyal:sujeet2212@cluster0.16ien.mongodb.net/taskify-backend");
+mongoose.connect(process.env.connection_string);
 
 const userSchema=new mongoose.Schema({
     username:String,
