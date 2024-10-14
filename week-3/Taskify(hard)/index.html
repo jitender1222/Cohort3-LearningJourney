@@ -21,13 +21,13 @@
         <div class="common" id="isComplete">
             <h3>IsCompleted</h3>
             <div id="droppableArea">
-                <p class="tasks">Hy completed todo</p>
+                <p draggable="true" ondrop="drop(event)" ondragover="allowDrop(event)" class="tasks">Hy completed todo</p>
             </div>
         </div>
         <div class="common" id="inProgress">
             <h3>InProgress</h3>
             <div id="droppableArea">
-                <p class="tasks">hi compeoted torfo</p>
+                <p ondrop="drop(event)" ondragover="allowDrop(event)" class="tasks">hi compeoted torfo</p>
             </div>
         </div>
     </div>

@@ -4,9 +4,10 @@ const todos=document.getElementById("todosList");
 const addTodoBtn=document.querySelector(".addTodo");
 let isEditing=false
 let existingTodo=null;
-console.log();
+let uniqueId=0;
 
 function addTodo(){
+   
     if(inputTodo.value && !isEditing){
         const div=document.createElement("div");
         const p=document.createElement("p");
@@ -16,6 +17,9 @@ function addTodo(){
 
         div.setAttribute("id","listOfTodo");
         p.classList.add("tasks")
+        p.setAttribute("draggable",true);
+        p.addEventListener("dragstart", drag);
+        p.setAttribute("id",uniqueId+1);
 
         p.innerHTML=inputTodo.value;
         inputTodo.value=""
@@ -38,10 +42,12 @@ function addTodo(){
         isEditing=false;
         inputTodo.value="";
         existingTodo=null;
+        addTodoBtn.innerHTML="Add Todo"
     }
     else{
         alert("First write some tasks")
     }
+    uniqueId++;
 }
 
 function deleteTodo(event){
@@ -58,4 +64,21 @@ function editTodo(event){
     inputTodo.value = p.innerHTML;
     addTodoBtn.innerHTML="Update Todo";
     console.log(existingTodo);
+}
+
+function drag(event){
+    if (event.target.tagName === "P") {
+        event.dataTransfer.setData("text/plain", event.target.id); 
+    }
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text/plain");
+    console.log(data);
+    ev.target.appendChild(document.getElementById(data));
+  }
+
+  function allowDrop(ev){
+    ev.preventDefault();
 }
