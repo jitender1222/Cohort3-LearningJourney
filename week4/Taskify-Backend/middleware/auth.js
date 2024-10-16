@@ -4,11 +4,9 @@ const JWT_SECRET=process.env.JWT_SECRET
 function userMiddleware(req, res, next) {
     // Implement user auth logic
     const token=req.headers.token;
-    console.log(token);
     const decodedToken=jwt.verify(token,JWT_SECRET);
-
-    if(decodedToken.username){
-        req.username=decodedToken.username
+    if(decodedToken){
+        req.userId=decodedToken.id
         next();
     }
     else{

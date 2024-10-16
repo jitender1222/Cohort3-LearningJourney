@@ -9,7 +9,9 @@ const port=process.env.PORT;
 app.use(express.json());
 
 const userRoute=require("./Router/user");
+const todoRoute=require("./Router/todo");
 
-app.use("/api",userRoute);
+app.use("/user",userRoute);
+app.use("/todo",todoRoute)
 
 app.listen(port,()=> console.log(`Server is running on PORT ${port}`))
