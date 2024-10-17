@@ -52,12 +52,26 @@ router.put('/updateTodo', adminMiddleware, async (req, res) => {
     }
   });
   
-router.delete('/deleteTodo', adminMiddleware, (req, res) => {
+router.delete('/deleteTodo', adminMiddleware, async (req, res) => {
     // Implement delete todo logic
+    
 });
 
-router.delete('/:id', adminMiddleware, (req, res) => {
+router.delete('/:id', adminMiddleware, async (req, res) => {
     // Implement delete todo by id logic
+    const findId= await todo.findById(req.params.id);
+     console.log(findId);
+    if(findId){
+        await todo.findByIdAndDelete(findId._id);
+        res.json({
+            message:"Successfully deleted the todo"
+        })
+    }
+    else{
+        res.json({
+            message:"todo not found or already deleted"
+        })
+    }
 });
 
 
