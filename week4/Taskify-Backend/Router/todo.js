@@ -54,6 +54,10 @@ router.put('/updateTodo', adminMiddleware, async (req, res) => {
   
 router.delete('/deleteTodo', adminMiddleware, async (req, res) => {
     // Implement delete todo logic
+    await todo.deleteMany();
+    res.json({
+        message:"Todo Deleted successfully",
+    })
     
 });
 
