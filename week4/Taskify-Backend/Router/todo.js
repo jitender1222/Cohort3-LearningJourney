@@ -61,8 +61,21 @@ router.delete('/:id', adminMiddleware, (req, res) => {
 });
 
 
-router.get('/getAllTodo', adminMiddleware, (req, res) => {
+router.get('/getAllTodo', adminMiddleware, async (req, res) => {
     // Implement fetching all todo logic
+    const allTodo=await todo.find();
+    console.log(allTodo);
+    if(allTodo){
+        res.json({
+            message:"Todo found successfully",
+            allTodo
+        })
+    }
+    else{
+        res.json({
+            message:"No todo found "
+        })
+    }
 });
 
 router.get('/:id', adminMiddleware, (req, res) => {
