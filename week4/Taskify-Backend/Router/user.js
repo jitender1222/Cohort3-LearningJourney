@@ -64,7 +64,20 @@ router.get('/todos', userMiddleware, (req, res) => {
 
 router.post('/logout', userMiddleware, (req, res) => {
     // Implement logout logic
-    
+    router.post('/logout', userMiddleware, (req, res) => {
+        try {
+          // No need to do anything specific on the server-side
+          // Just instruct the client to remove the token
+          res.status(200).json({
+            message: "Logged out successfully",
+          });
+        } catch (error) {
+          res.status(500).json({
+            message: "Server error",
+          });
+        }
+      });
+      
 });
 
 module.exports = router
