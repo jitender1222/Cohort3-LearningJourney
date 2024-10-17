@@ -30,10 +30,28 @@ router.post('/createTodo', adminMiddleware, async (req, res) => {
     }
 });
 
-router.put('/updateTodo', adminMiddleware, (req, res) => {
-    // Implement update todo  logic
-});
-
+router.put('/updateTodo', adminMiddleware, async (req, res) => {
+    try {
+      const { _id, description, title } = req.body;
+  
+      // Input validation
+      if (!_id || !description || !title) {
+        return res.status(400).json({ message: "Invalid input data" });
+      }
+  
+      // Update directly
+      const updateTodo = await todo.findByIdAndUpdate(_id, { description, title }, { new: true });
+      if (updateTodo) {
+        res.status(200).json({ message: "Updated successfully", todo: updateTodo });
+      } else {
+        res.status(404).json({ message: "Todo not found" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+  
 router.delete('/deleteTodo', adminMiddleware, (req, res) => {
     // Implement delete todo logic
 });
