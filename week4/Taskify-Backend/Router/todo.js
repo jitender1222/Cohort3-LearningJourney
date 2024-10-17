@@ -78,8 +78,22 @@ router.get('/getAllTodo', adminMiddleware, async (req, res) => {
     }
 });
 
-router.get('/:id', adminMiddleware, (req, res) => {
+router.get('/:id', adminMiddleware, async (req, res) => {
     // Implement fetching todo by id logic
+    const userId=req.params.id;
+    if(userId){
+        const allTodos=await todo.findById(userId);
+        console.log("all",allTodos);
+        res.json({
+            message:"all the todos",
+            allTodos
+        })
+    }
+    else{
+        res.json({
+            message:"No Todo Found"
+        })
+    }
 });
 
 module.exports = router;
