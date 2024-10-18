@@ -37,7 +37,21 @@ router.delete("/deleteTodo",(req,res)=>{
 router.delete("/:id",(req,res)=>{
 })
 
-router.get("/allTodos",(req,res)=>{
+router.get("/allTodos",auth,async (req,res)=>{
+    const userId=req.userId;
+    const foundUser=await userModel.findById(userId);
+    if(!foundUser){
+        res.json({
+            message:"User not found"
+        })
+    }
+    else{
+        const newTodo=await todoModel.find({userId})
+        res.json({
+            message:"All todos",
+            newTodo
+        })
+    }
 })
 
 module.exports=router;
