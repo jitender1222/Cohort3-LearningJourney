@@ -7,7 +7,11 @@ const userSchema=new mongoose.Schema({
         type: String,
         unique:true
     },
-    password: String
+    password: String,
+    todos:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Todo"
+    }]
 })
 
 const todoSchema=new mongoose.Schema({
