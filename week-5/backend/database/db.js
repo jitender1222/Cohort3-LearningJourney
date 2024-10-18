@@ -13,7 +13,7 @@ const userSchema=new mongoose.Schema({
 const todoSchema=new mongoose.Schema({
     description:String,
     userId:ObjectId,
-})
+},{timestamps:true})
 
 const userModel=mongoose.model("User",userSchema);
 const todoModel=mongoose.model("Todo",todoSchema);
