@@ -51,7 +51,8 @@ router.put("/updateTodo",auth,async (req,res)=>{
 // delete all the todo 
 router.delete("/deleteAllTodo",auth,async (req,res)=>{
     const userId=req.userId;
-    const foundTodo=await todoModel.findByIdAndDelete(userId);
+    console.log(userId);
+    const foundTodo=await todoModel.deleteMany({userId:userId});
     if(foundTodo){
         res.json({
             message:"Todos deleted successfully",
