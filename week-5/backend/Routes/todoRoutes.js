@@ -1,8 +1,9 @@
-const { Router } = require("express");
+const { Router, response } = require("express");
 const auth=require("../middleware/auth");
 const { userModel, todoModel } = require("../database/db");
 const router=Router();
 
+//create todo
 router.post("/createTodo",auth, async (req,res)=>{
     const userId=req.userId
     const description=req.body.description;
@@ -28,15 +29,58 @@ router.post("/createTodo",auth, async (req,res)=>{
     });
 })
 
-router.put("/updateTodo",(req,res)=>{
+//update the todo 
+router.put("/updateTodo",auth,async (req,res)=>{
+    const todoId=req.body.todoId;
+    const description=req.body.description;
+    const todoFound=await todoModel.findById(todoId);
+    if(todoFound){
+        const updateTodo=await todoModel.findByIdAndUpdate(todoId,{description:description});
+        res.json({
+            message:"todo updated successfully",
+            updateTodo
+        })
+    }
+    else{
+        res.json({
+            message:"todo not found"
+        })
+    }
 })
 
-router.delete("/deleteTodo",(req,res)=>{
+// delete all the todo 
+router.delete("/deleteAllTodo",auth,async (req,res)=>{
+    const userId=req.userId;
+    const foundTodo=await todoModel.findByIdAndDelete(userId);
+    if(foundTodo){
+        res.json({
+            message:"Todos deleted successfully",
+        })
+    }
+    else{
+        res.json({
+            message:"Todo not found"
+        })
+    }
 })
 
-router.delete("/:id",(req,res)=>{
+// delete specific todo
+router.delete("/deleteTodo",async (req,res)=>{
+    const todoId=req.body.todoId;
+    const deleteTodo=await todoModel.findByIdAndDelete(todoId);
+    if(deleteTodo){
+        res.json({
+            message:"todo has been deleted"
+        })
+    }
+    else{
+        res.json({
+            message:"Something went wrong"
+        })
+    }
 })
 
+// get all the todo 
 router.get("/allTodos",auth,async (req,res)=>{
     const userId=req.userId;
     const foundUser=await userModel.findById(userId);
@@ -52,6 +96,25 @@ router.get("/allTodos",auth,async (req,res)=>{
             newTodo
         })
     }
+})
+
+// get specific todo
+router.get("/:id",auth,async (req,res)=>{
+    const id=req.params.id
+    const todo=await todoModel.findById(id);
+    if(todo){
+        const desc=todo.description
+        res.json({
+            message:"this is the required todo",
+            description:todo.description
+        })
+    }
+    else{
+        res.json({
+            message:"todo not found"
+        })
+    }
+    
 })
 
 module.exports=router;
