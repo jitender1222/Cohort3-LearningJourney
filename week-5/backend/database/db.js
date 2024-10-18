@@ -1,7 +1,7 @@
 const mongoose=require("mongoose");
 const ObjectId=mongoose.Schema.ObjectId
 
-const userSchema=mongoose.Schema({
+const userSchema=new mongoose.Schema({
     username: String,
     email:{
         type: String,
@@ -10,7 +10,7 @@ const userSchema=mongoose.Schema({
     password: String
 })
 
-const todoSchema=mongoose.Schema({
+const todoSchema=new mongoose.Schema({
     description:String,
     userId:ObjectId,
 })

@@ -16,20 +16,27 @@ router.post("/signup",async (req,res)=>{
             message:"All fields required"
         })
     }
-
+    let errorThrown=false;
+    try {
     const hashedPassword=await bcrypt.hash(password,5);
     console.log(hashedPassword);
-
     await userModel.create({
         username,
         email,
         password:hashedPassword
     });
 
+    } catch (error) {
+        res.json({
+            message:"User already exist",
+        })
+        errorThrown=true
+    }
+    if(!errorThrown){
     res.json({
         message:"User Signed up successfully"
     })
-
+}
 })
 
 router.post("/login",async (req,res)=>{
