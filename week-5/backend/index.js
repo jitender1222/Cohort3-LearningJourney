@@ -12,6 +12,10 @@ app.use(express.json());
 app.use("/user",userRoute);
 app.use("/todo",todoRoute)
 
+app.get("/",(req,res)=>{
+    res.sendFile(__dirname + "/../public/frontend/index.html")
+})
+
 app.listen(port,()=>{
     console.log(`server is running on port ${port} `);
 })
