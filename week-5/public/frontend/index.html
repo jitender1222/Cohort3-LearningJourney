@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
     <title>Document</title>
 </head>
 <body>  
     <div id="signup" class="signup">
         <h2 class="heading">Signup</h2>
-        <input placeholder="Enter your name" />
-        <input placeholder="Enter your email" />
-        <input placeholder="Enter your password" />
-        <button class="submit-btn" id="submitBtn">Submit</button>
+        <input id="signup-username" placeholder="Enter your name" />
+        <input id="signup-email" placeholder="Enter your email" />
+        <input id="signup-password" placeholder="Enter your password" />
+        <button class="submit-btn" onclick="signupInfo()" id="submitBtn">Submit</button>
          <a class="link" href="./login.html">Already signup ? Login </a>
     </div>
 </div>

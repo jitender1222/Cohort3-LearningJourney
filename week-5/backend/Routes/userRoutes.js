@@ -9,7 +9,7 @@ mongoose.connect(process.env.connection_string);
 
 router.post("/signup", async (req, res) => {
   const requireBody = z.object({
-    email: z.string().min(3).max(30).email(),
+    email: z.string().min(3).max(30),
     password: z
       .string()
       .min(4)
