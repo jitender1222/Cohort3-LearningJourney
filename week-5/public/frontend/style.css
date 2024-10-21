@@ -23,7 +23,6 @@ body{
 .submit-btn{
     margin-top: 10px;
     width: 15%;
-    height: 7%;
     text-align: center;
     cursor: pointer;
     background-color: #eabfff;
@@ -44,4 +43,70 @@ body{
 }
 .link:hover{
     color:#eabfff;
+}
+
+.todo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:15%;
+    width:100%;
+    height:100px;
+}
+.create-todo{
+    height:40%;
+    width: 30%;
+    border: none;
+    border-radius: 10px;
+    margin-right:5px;
+    margin-top: 10px;
+}
+.btn-todo{
+    height: 40%;
+}
+.user-name{
+    text-align: center;
+}
+
+.todo-outer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo-list{
+    font-size: large;
+    font-weight: bold;
+    background-color: #eabfff;
+    color: #800080;
+    width:55%;
+    height:40px;
+    border-radius: 10px;
+    margin-top:20px;
+    padding: 10px;
+}
+.outer-todo{
+    display: flex;
+    width: 40%;
+}
+.todo-btn{
+    width:60%;
+    font-size: large;
+    font-weight: bold;
+    background-color: #eabfff;
+    color: #800080;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.todo-btn-div{
+    display: flex;
+    height:40px;
+    margin-top:30px;
+    width: 40%;
+    margin-left: 10px;
+    
 }

@@ -9,7 +9,7 @@ mongoose.connect(process.env.connection_string);
 
 router.post("/signup", async (req, res) => {
   const requireBody = z.object({
-    email: z.string().min(3).max(30),
+    email: z.string().min(3).max(30).email(),
     password: z
       .string()
       .min(4)
@@ -21,7 +21,7 @@ router.post("/signup", async (req, res) => {
   const parsedDataWithSuccess = requireBody.safeParse(req.body);
 
   if (!parsedDataWithSuccess.success) {
-    res.json({
+    res.status(400).json({
       message: "Incorrect format",
       error: parsedDataWithSuccess.error,
     });
