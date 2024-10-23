@@ -69,17 +69,18 @@ router.delete("/deleteAllTodo",auth,async (req,res)=>{
 })
 
 // delete specific todo
-router.delete("/deleteTodo",async (req,res)=>{
-    const todoId=req.body.todoId;
+router.delete("/deleteTodo/:todoId",async (req,res)=>{
+    const todoId = req.params.todoId;
+    console.log(todoId);
     const deleteTodo=await todoModel.findByIdAndDelete(todoId);
     if(deleteTodo){
-        res.json({
+        res.status(200).json({
             message:"todo has been deleted"
         })
     }
     else{
-        res.json({
-            message:"Something went wrong"
+        res.status(401).json({
+            message:"Something went wrong todo not found"
         })
     }
 })

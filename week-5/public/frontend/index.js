@@ -67,8 +67,8 @@ async function createTodos() {
         }
       );
       if (response.status === 201) {
-        
-        storeTodoId=response.data.newTodo._id;
+        console.log(response);
+        const newTodoId=response.data.newTodo._id;
         const outerdiv = document.createElement("div");
         outerdiv.classList.add("outer-todo");
   
@@ -86,6 +86,8 @@ async function createTodos() {
   
         editBtn.innerHTML="Edit";
         deleteBtn.innerHTML="Delete";
+
+        deleteBtn.setAttribute("data-id", newTodoId);
   
         todoBtnDiv.appendChild(editBtn);
         todoBtnDiv.appendChild(deleteBtn);
@@ -101,10 +103,27 @@ async function createTodos() {
           createTodo.value=storeCurrentTodo.innerText;
           isEditable=true
           createTodoBtn.innerText="Edit Todo";
+
         })
   
-        deleteBtn.addEventListener("click",()=>{
-          console.log("delete btn");
+        deleteBtn.addEventListener("click",async (event)=>{
+          const todoId = event.target.getAttribute("data-id");  // Get the specific todoId from the data-attribute
+          console.log("Todo ID to delete:", todoId);
+          const response=await axios.delete(`http://localhost:3000/todo/deleteTodo/${todoId}`,{
+            todoId:todoId
+          },{
+            headers: {
+              token: token, // Send the token in the request headers
+            },
+          });
+          console.log(response);
+          if(response.status == 200){
+            const deleteTodo = event.target.parentElement.parentElement;
+            deleteTodo.remove(); 
+          }
+          else{
+            alert("Something went wrong")
+          }
         })
       }
     } catch (error) {
@@ -132,20 +151,3 @@ async function createTodos() {
     console.log("inside",todo);
   }
 }
-// editBtn.addEventListener("click",async ()=>{
-//   const todoId=response.data.newTodo._id;
-//   const todoData=await axios.put("http://localhost:3000/todo/updateTodo",{
-//     todoId,
-//     description:"updated todod"
-//   },{
-//     headers: {
-//       token: token, // Send the token in the request headers
-//     },
-//   })
-//   if(todoData){
-//     console.log(todoData);
-//   }
-//   else{
-//     console.log("something went wrong");
-//   }
-// })
