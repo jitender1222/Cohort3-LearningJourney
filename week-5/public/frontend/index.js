@@ -3,7 +3,10 @@ let signupEmail = document.getElementById("signup-email");
 let signupPassword = document.getElementById("signup-password");
 let createTodo = document.getElementById("create-todo");
 let todoOuter = document.getElementById("todo");
-console.log(todoOuter);
+let createTodoBtn=document.getElementById("create-todo-btn")
+let isEditable=false;
+let storeCurrentTodo;
+let storeTodoId;
 
 async function signupInfo() {
   let username = signupName.value;
@@ -49,51 +52,100 @@ async function loginInfo() {
 
 async function createTodos() {
   let token = localStorage.getItem("token");
-  let todo = createTodo.value;
-  try {
-    let response = await axios.post(
-      "http://localhost:3000/todo/createTodo",
-      {
-        description: todo,
-      },
-      {
-        headers: {
-          token: token, // Send the token in the request headers
+ 
+  if(!isEditable){
+    try {
+      let response = await axios.post(
+        "http://localhost:3000/todo/createTodo",
+        {
+          description: createTodo.value,
         },
+        {
+          headers: {
+            token: token, // Send the token in the request headers
+          },
+        }
+      );
+      if (response.status === 201) {
+        
+        storeTodoId=response.data.newTodo._id;
+        const outerdiv = document.createElement("div");
+        outerdiv.classList.add("outer-todo");
+  
+        const div = document.createElement("div");
+        div.classList.add("todo-list");
+        div.innerHTML = createTodo.value;
+  
+        const todoBtnDiv = document.createElement("div");
+        todoBtnDiv.classList.add("todo-btn-div");
+  
+        const editBtn = document.createElement("button");
+        const deleteBtn = document.createElement("button");
+        editBtn.classList.add("todo-btn");
+        deleteBtn.classList.add("todo-btn");
+  
+        editBtn.innerHTML="Edit";
+        deleteBtn.innerHTML="Delete";
+  
+        todoBtnDiv.appendChild(editBtn);
+        todoBtnDiv.appendChild(deleteBtn);
+  
+        outerdiv.appendChild(div);
+        outerdiv.appendChild(todoBtnDiv);
+  
+        todoOuter.appendChild(outerdiv);
+        createTodo.value="";
+  
+        editBtn.addEventListener("click",()=>{
+          storeCurrentTodo=div;
+          createTodo.value=storeCurrentTodo.innerText;
+          isEditable=true
+          createTodoBtn.innerText="Edit Todo";
+        })
+  
+        deleteBtn.addEventListener("click",()=>{
+          console.log("delete btn");
+        })
       }
-    );
-    if (response.status === 201) {
-      console.log(response);
-      const outerdiv = document.createElement("div");
-      outerdiv.classList.add("outer-todo");
-
-      const div = document.createElement("div");
-      div.classList.add("todo-list");
-      div.innerHTML = todo;
-
-      const todoBtnDiv = document.createElement("div");
-      todoBtnDiv.classList.add("todo-btn-div");
-
-      const editBtn = document.createElement("button");
-      const deleteBtn = document.createElement("button");
-      editBtn.classList.add("todo-btn");
-      deleteBtn.classList.add("todo-btn");
-
-      editBtn.innerHTML="Edit";
-      deleteBtn.innerHTML="Delete";
-
-      todoBtnDiv.appendChild(editBtn);
-      todoBtnDiv.appendChild(deleteBtn);
-
-      outerdiv.appendChild(div);
-      outerdiv.appendChild(todoBtnDiv);
-
-      todoOuter.appendChild(outerdiv);
+    } catch (error) {
+      console.log("error",error);
+      alert("Please Login First");
+      createTodo.value = "";
+      window.location.href = "/login";
     }
-  } catch (error) {
-    console.log(error);
-    alert(error.response.data.message + " " + "Please Login First");
-    createTodo.value = "";
-    window.location.href = "/login";
+  }
+  else if(isEditable){
+    const todoId=storeTodoId;
+    await axios.put("http://localhost:3000/todo/updateTodo",{
+      todoId,
+      description:createTodo.value
+    },{
+      headers: {
+        token: token, // Send the token in the request headers
+      },
+    })
+    storeCurrentTodo.innerHTML=createTodo.value;
+    todo=createTodo.value
+    isEditable=false;
+    createTodo.value="";
+    createTodoBtn.innerText="Create Todo";
+    console.log("inside",todo);
   }
 }
+// editBtn.addEventListener("click",async ()=>{
+//   const todoId=response.data.newTodo._id;
+//   const todoData=await axios.put("http://localhost:3000/todo/updateTodo",{
+//     todoId,
+//     description:"updated todod"
+//   },{
+//     headers: {
+//       token: token, // Send the token in the request headers
+//     },
+//   })
+//   if(todoData){
+//     console.log(todoData);
+//   }
+//   else{
+//     console.log("something went wrong");
+//   }
+// })

@@ -23,6 +23,7 @@ body{
 .submit-btn{
     margin-top: 10px;
     width: 15%;
+    height: 35px;
     text-align: center;
     cursor: pointer;
     background-color: #eabfff;
@@ -80,7 +81,7 @@ body{
     font-weight: bold;
     background-color: #eabfff;
     color: #800080;
-    width:55%;
+    width:150px;
     height:40px;
     border-radius: 10px;
     margin-top:20px;

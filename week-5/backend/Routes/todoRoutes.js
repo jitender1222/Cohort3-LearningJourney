@@ -14,7 +14,7 @@ router.post("/createTodo",auth, async (req,res)=>{
     }
     const findUser= await userModel.findById(userId);
     if (!findUser) {
-        return res.status(404).json({ message: "User not found" });
+        return res.json({ message: "User not found" });
     }
     const newTodo=await todoModel.create({
         description,
@@ -25,7 +25,8 @@ router.post("/createTodo",auth, async (req,res)=>{
     await findUser.save();
     return res.status(201).json({
         message: "Todo created successfully",
-        findUser
+        findUser,
+        newTodo
     });
 })
 
@@ -35,7 +36,9 @@ router.put("/updateTodo",auth,async (req,res)=>{
     const description=req.body.description;
     const todoFound=await todoModel.findById(todoId);
     if(todoFound){
-        const updateTodo=await todoModel.findByIdAndUpdate(todoId,{description:description});
+        const updateTodo=await todoModel.findByIdAndUpdate(todoId,{description:description},{
+            new:true
+        });
         res.json({
             message:"todo updated successfully",
             updateTodo
