@@ -10,7 +10,6 @@ const userSchema= new mongoose.Schema({
 })
 
 const courseSchema = new mongoose.Schema({
-    courseId:String,
     title:String,
     description:String,
     creatorId:ObjectId,

@@ -1,28 +1,28 @@
 const jwt=require("jsonwebtoken")
 
-const adminMiddleware=()=>{
-    const token=req.body.token;
+const adminMiddleware=(req,res,next)=>{
+    const token=req.headers.token;
     const decodedToken=jwt.verify(token,process.env.JWT_SECRET_ADMIN);
     if(decodedToken){
-        req.body=decodedToken.id;
+        req.adminId=decodedToken.id;
         next();
     }
     else{
-        res.status(402).json({
+        res.status(401).json({
             message:"Invalid Token"
         })
     }
 }
 
-const userMiddleware=()=>{
-    const token=req.body.token;
+const userMiddleware=(req,res,next)=>{
+    const token=req.headers.token;
     const decodedToken=jwt.verify(token,process.env.JWT_SECRET_USER);
     if(decodedToken){
-        req.body=decodedToken.id;
+        req.userId=decodedToken.id;
         next();
     }
     else{
-        res.status(402).json({
+        res.status(401).json({
             message:"Invalid Token"
         })
     }

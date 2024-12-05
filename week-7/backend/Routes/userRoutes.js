@@ -10,12 +10,12 @@ router.post("/signup",async (req,res)=>{
         const requireBody=z.object({
             email:z.string().min(3).max(20).email(),
             password:z.string().min(3).max(20).regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
-            firstName:z.string.min(3).max(20),
-            lastName:z.string.min(3).max(20)
+            firstName:z.string().min(3).max(20),
+            lastName:z.string().min(3).max(20)
         })
         const parsedDataWithSuccess=requireBody.safeParse(req.body);
         if(!parsedDataWithSuccess.success){
-            res.status(402).json({
+            res.status(401).json({
                 message:"Incorrect Format",
                 error:parsedDataWithSuccess.error,
             })
