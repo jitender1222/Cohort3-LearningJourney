@@ -1,0 +1,62 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-image: url("https://cdn.pixabay.com/photo/2019/09/21/18/58/dog-4494554_1280.jpg");
+}
+.header {
+  background-color: rgb(206, 119, 7);
+  padding: 10px;
+  text-align: center;
+  font-size: x-large;
+  font-family: sans-serif;
+}
+.forms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.inner-form {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  gap: 20px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  color: rgb(206, 119, 7);
+  font-weight: bold;
+}
+.btn {
+  padding: 10px;
+  width: 25%;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  background-color: orange;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.btn:hover {
+  background-color: rgb(255, 199, 96);
+}
+
+.btn-div {
+  display: flex;
+  justify-content: space-between;
+}
