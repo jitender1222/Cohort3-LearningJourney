@@ -1,14 +1,15 @@
 import "./App.css";
 import Form from "./component/Form";
 import Header from "./component/Header";
-import Table from "./component/Table";
+import { BrowserRouter } from "react-router";
 
 function App() {
   return (
     <>
-      <Header />
-      <Form />
-      <Table />
+      <BrowserRouter>
+        <Header />
+        <Form />
+      </BrowserRouter>
     </>
   );
 }

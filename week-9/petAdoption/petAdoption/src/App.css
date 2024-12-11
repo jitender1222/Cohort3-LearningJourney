@@ -17,6 +17,7 @@ body {
   justify-content: center;
   align-items: center;
   margin-top: 50px;
+  flex-direction: column;
 }
 
 .inner-form {
@@ -59,4 +60,36 @@ label {
 .btn-div {
   display: flex;
   justify-content: space-between;
+}
+
+.outer-table {
+  display: flex;
+  margin-top: 40px;
+  color: rgb(206, 119, 7);
+  font-weight: bold;
+  border: 3px solid orange;
+  padding: 10px;
+}
+
+.head-table {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.table-item {
+  display: flex;
+  color: red;
+  font-family: sans-serif;
+  margin-top: 10px;
+}
+
+.item {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.error-message {
+  color: red;
 }
