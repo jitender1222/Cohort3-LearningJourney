@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../App.css";
+import { AuthContext } from "../App";
 const Login = ({ handleLogin }) => {
   const [inputValue, setInputValue] = useState("");
+  const authContext = useContext(AuthContext);
 
   const onSubmit = () => {
+    const loginFunction = authContext ? authContext.handleLogin : handleLogin;
     if (inputValue.trim()) {
-      handleLogin(inputValue); // Call handleLogin only when the user submits
+      loginFunction(inputValue); // Call handleLogin only when the user submits
     }
   };
 
