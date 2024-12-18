@@ -1,5 +1,4 @@
 const ProductCard = ({ items }) => {
-  console.log(items);
   return (
     <div className="flex flex-col justify-center items-center flex-wrap mt-5">
       <span className="w-[250px] h-[250px] border-2">
