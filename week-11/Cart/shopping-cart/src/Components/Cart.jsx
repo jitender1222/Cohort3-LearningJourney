@@ -6,8 +6,8 @@ const Cart = () => {
   console.log("inside Items", items);
   return (
     <>
-      <div>
-        <h2 className="text-4xl text-center mt-4">Shopping Cart</h2>
+      <h2 className="text-4xl text-center mt-4">Shopping Cart</h2>
+      <div className="flex items-center justify-around p-5 mt-10">
         {items.map((item) => (
           <div
             className="flex items-center justify-between p-10 shadow-xl"
@@ -42,6 +42,20 @@ const Cart = () => {
             <span className="font-bold">Rs {item.price}</span>
           </div>
         ))}
+        <div className="flex flex-col shadow-xl p-10 w-[30%] gap-3">
+          <span className="font-bold">OrderSummary</span>
+          <div className="flex justify-between">
+            <span>Items(2)</span>
+            <span>Rs 2473.00</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Order Total:</span>
+            <span>Rs 2473</span>
+          </div>
+          <button className="bg-yellow-400 p-2 rounded w-full hover:bg-yellow-500">
+            Proceed to Buy
+          </button>
+        </div>
       </div>
     </>
   );
