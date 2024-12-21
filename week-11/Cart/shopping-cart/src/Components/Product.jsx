@@ -1,11 +1,20 @@
-import { useRecoilState } from "recoil";
-import cartItems from "./CartItems";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { cartItems, isCartItems } from "./CartItems";
+import { useState } from "react";
+import { NavLink } from "react-router";
 
 const ProductCard = ({ items }) => {
   const [product, setProduct] = useRecoilState(cartItems);
+  const [addCart, setAddCart] = useState(false);
+  const setIsCartItem = useSetRecoilState(isCartItems);
 
   function onhandleClick(items) {
-    setProduct([...product, items]);
+    const itemExists = product.find((prod) => prod.id === items.id);
+    if (!itemExists) {
+      setProduct([...product, { ...items, quantity: 1 }]);
+      setAddCart(true);
+      setIsCartItem(true);
+    }
   }
 
   return (
@@ -29,7 +38,13 @@ const ProductCard = ({ items }) => {
         className=" bg-yellow-400 font-bold px-10 py-2 rounded hover:bg-yellow-500"
         onClick={() => onhandleClick(items)}
       >
-        Add to Cart
+        {addCart ? (
+          <button>
+            <NavLink to={"/cart"}>Move to Cart</NavLink>
+          </button>
+        ) : (
+          <button>Add to Cart</button>
+        )}
       </button>
     </div>
   );

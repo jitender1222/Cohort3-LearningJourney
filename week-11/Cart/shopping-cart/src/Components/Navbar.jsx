@@ -1,10 +1,9 @@
 import { NavLink } from "react-router";
 import { useRecoilValue } from "recoil";
-import cartItems from "./CartItems";
+import { cartItems } from "./CartItems";
 
 const Navbar = () => {
   const count = useRecoilValue(cartItems).length;
-  console.log(count);
   return (
     <div className="flex justify-between p-5 items-center bg-blue-950 text-white">
       <NavLink to={"/"}>
