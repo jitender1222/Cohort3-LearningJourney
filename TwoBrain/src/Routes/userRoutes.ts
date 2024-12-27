@@ -1,14 +1,15 @@
 import { Router } from "express";
 import z from "zod";
 import bcrypt from "bcrypt";
-import { contentModel, userModel } from "../Database/db";
+import { LinkModel, contentModel, userModel } from "../Database/db";
 import jwt from "jsonwebtoken";
 import authMiddleware from "../Middleware/authMiddleware";
+import { random } from "../utils/utils";
 
 const router = Router();
 
 //signup
-router.post("/api/v1/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const requireBody = z.object({
       email: z.string().min(3).max(20).email(),
@@ -55,7 +56,7 @@ router.post("/api/v1/signup", async (req, res) => {
 
 // signin
 
-router.post("api/v1/signin", async (req, res) => {
+router.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -64,16 +65,17 @@ router.post("api/v1/signin", async (req, res) => {
         message: "All fields required",
       });
     }
-
     const findUser = await userModel.findOne({ email });
     if (!findUser) {
       res.status(401).json({
         message: "User not found with this email ",
       });
     }
-
-    if (findUser && findUser.password) {
-      const isPasswordMatched = bcrypt.compare(password, findUser.password);
+    if (findUser) {
+      const isPasswordMatched = await bcrypt.compare(
+        password,
+        findUser.password as string
+      );
       if (!isPasswordMatched) {
         res.status(401).json({
           message: "Not Authorized",
@@ -82,7 +84,7 @@ router.post("api/v1/signin", async (req, res) => {
       }
     }
     if (findUser) {
-      const token = jwt.sign(
+      const token = await jwt.sign(
         {
           id: findUser._id.toString(),
         },
@@ -108,27 +110,40 @@ router.post("api/v1/signin", async (req, res) => {
 
 // content
 
-router.post("api/v1/content", authMiddleware, async (req, res) => {
-  const title = req.body.title;
-  const link = req.body.link;
+router.post("/content", authMiddleware, async (req, res) => {
+  try {
+    const { title, link } = req.body;
 
-  contentModel.create({
-    link,
-    title,
-    userId: req.userId,
-    tags: [],
-  });
+    if (!title || !link) {
+      res.status(401).send("All fields are required");
+      return;
+    }
+
+    const content = await contentModel.create({
+      link,
+      title,
+      userId: req.userId,
+      tags: [],
+    });
+
+    res.status(200).json({
+      message: "Content created Successfully",
+      content,
+    });
+  } catch (error) {
+    res.send(error);
+  }
 });
 
 //get all Content
 
-router.post("/api/v1/allContent", authMiddleware, async (req, res) => {
+router.post("/allContent", authMiddleware, async (req, res) => {
   const userId = req.userId;
   const content = await contentModel
     .find({
       userId: userId,
     })
-    .populate("userId", "userName");
+    .populate("userId", "firstName");
   res.status(200).json({
     content,
   });
@@ -136,15 +151,43 @@ router.post("/api/v1/allContent", authMiddleware, async (req, res) => {
 
 // delete content
 
-router.delete("api/v1/deleteContent", authMiddleware, async (req, res) => {
-  const contentId = req.body.contentId;
-  await contentModel.deleteMany({
-    contentId,
-    userId: req.userId,
-  });
+router.delete("/deleteContent", authMiddleware, async (req, res) => {
+  try {
+    const { contentId } = req.body;
+    if (!contentId) {
+      res.send("contend not found with this id");
+      return;
+    }
+    await contentModel.deleteMany({
+      _id: contentId,
+      userId: req.userId,
+    });
+    res.json({
+      message: "Successfully deleted content",
+    });
+  } catch (error) {
+    res.json({
+      message: "Something went wrong",
+      error,
+    });
+  }
+});
+
+router.post("/brain/share", authMiddleware, async (req, res) => {
+  const { shareLink } = req.body;
+  if (shareLink) {
+    await LinkModel.create({
+      userId: req.userId,
+      hash: random(10),
+    });
+  } else {
+    await LinkModel.deleteOne({
+      userId: req.userId,
+    });
+  }
 
   res.json({
-    message: "Successfully deleted content",
+    message: "Shareable link generated",
   });
 });
 export default router;
