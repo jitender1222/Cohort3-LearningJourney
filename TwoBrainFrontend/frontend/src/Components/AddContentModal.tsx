@@ -1,8 +1,35 @@
+import { useRef, useState } from "react";
 import { CloseIcon } from "../Icons/CloseIcon";
 import { Button } from "./Button";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
+
+enum ContentType {
+  Youtube = "youtube",
+  Twitter = "twitter",
+}
 
 export const AddContetnModal = ({ modal, onClose }) => {
-  console.log(modal);
+  const useTitleRef = useRef<HTMLInputElement>();
+  const useLinkRef = useRef<HTMLInputElement>();
+  const [type, setType] = useState(ContentType.Youtube);
+  async function onHandleSubmit() {
+    const title = useTitleRef.current?.value;
+    const link = useLinkRef.current?.value;
+    await axios.post(
+      BACKEND_URL + "/api/v1/user/content",
+      {
+        title,
+        link,
+        type,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+  }
   return (
     <div>
       {modal && (
@@ -15,13 +42,50 @@ export const AddContetnModal = ({ modal, onClose }) => {
               >
                 <CloseIcon />
               </span>
+
               <div className="flex flex-col gap-4 p-4">
-                <input placeholder="Enter your text" className="border" />
-                <input placeholder="Enter your text" className="border" />
+                <input
+                  ref={useTitleRef}
+                  placeholder="Enter your Title"
+                  className="border"
+                />
+                <input
+                  ref={useLinkRef}
+                  placeholder="Enter your Link"
+                  className="border"
+                />
+              </div>
+
+              <div>
+                <span>Type</span>
+                <div className="flex gap-2 mb-2 mt-2">
+                  <Button
+                    text="YouTube"
+                    variant={
+                      type === ContentType.Youtube ? "primary" : "secondary"
+                    }
+                    onClick={() => {
+                      setType(ContentType.Youtube);
+                    }}
+                  ></Button>
+                  <Button
+                    text="Twitter"
+                    variant={
+                      type === ContentType.Twitter ? "primary" : "secondary"
+                    }
+                    onClick={() => {
+                      setType(ContentType.Twitter);
+                    }}
+                  ></Button>
+                </div>
               </div>
 
               <div className="flex justify-center">
-                <Button variant="primary" text="Submit" />
+                <Button
+                  onClick={onHandleSubmit}
+                  variant="primary"
+                  text="Submit"
+                />
               </div>
             </div>
           </div>
