@@ -1,0 +1,17 @@
+{
+  "name": "travelplan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc -build && node ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.2.0",
+    "prisma": "^6.2.0",
+    "typescript": "^5.7.2"
+  }
+}
