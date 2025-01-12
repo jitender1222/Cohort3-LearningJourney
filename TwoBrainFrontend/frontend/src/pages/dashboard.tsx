@@ -5,9 +5,11 @@ import { Card } from "../Components/Card";
 import { AddIcon } from "../Icons/AddIcon";
 import { ShareIcons } from "../Icons/ShareIcons";
 import { SideBar } from "../Components/SideBar";
+import { useContent } from "../hooks/useContent";
 
 function DashBoard() {
   const [openModal, setOpenModal] = useState(false);
+  const content = useContent();
   return (
     <div className="p-2  bg-gray-100 min-h-screen">
       <SideBar />
@@ -32,11 +34,9 @@ function DashBoard() {
           ></Button>
         </div>
         <div className="flex flex-wrap justify-center gap-4 mt-4 ml-72">
-          <Card title={"Project Title"} type="youtube" />
-          <Card title={"Project Title"} type="twitter" />
-          <Card title={"Project Title"} type="youtube" />
-          <Card title={"Project Title"} type="twitter" />
-          <Card title={"Project Title"} type="youtube" />
+          {content.map(({ title, type, link }, index) => (
+            <Card key={index} title={title} type={type} link={link} />
+          ))}
         </div>
       </div>
     </div>
