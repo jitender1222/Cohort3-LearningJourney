@@ -6,6 +6,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/api/v1/user", router);
+app.use("/api/v1/account", router);
 async function connect() {
   await mongoose.connect(process.env.MONGO_URL);
 }

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { z } from "zod";
-import { userModel } from "../Db/db.js";
+import { accountModel, userModel } from "../Db/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { uservalidation } from "../Middleware/authMiddleware.js";
@@ -40,6 +40,11 @@ router.post("/signup", async (req, res) => {
       username,
       email,
       password: hashedPassword,
+    });
+    const userId = user._id;
+    await accountModel.create({
+      userId,
+      balance: 1 + Math.random() * 10000,
     });
     res.status(201).json({
       message: "User created successfully",
@@ -102,7 +107,9 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-router.post("/updateUserInfo", uservalidation, async (req, res) => {
+//update user
+
+router.put("/updateUserInfo", uservalidation, async (req, res) => {
   const userId = req.userId;
   const { username, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 8);
@@ -119,6 +126,94 @@ router.post("/updateUserInfo", uservalidation, async (req, res) => {
     message: "User updated successfully",
     updateUserInfo,
   });
+});
+
+// find user
+
+router.get("/allUser", uservalidation, async (req, res) => {
+  const filter = req.query.filter || "";
+  console.log(filter);
+  const user = await userModel.find({
+    $or: [
+      {
+        username: { $regex: filter },
+      },
+    ],
+  });
+  res.json({
+    users: user,
+  });
+});
+
+// get user balance
+
+router.get("/userBalance", uservalidation, async (req, res) => {
+  const balAmount = await accountModel.findOne({ userId: req.userId });
+  if (!balAmount) {
+    res.status(401).json({
+      message: "No balance",
+    });
+    return;
+  }
+  res.status(200).json({
+    balance: balAmount.balance,
+  });
+});
+
+// transfer money to another acount
+
+router.post("/transferMoney", uservalidation, async (req, res) => {
+  try {
+    const moneyTransferFromAccount = req.userId;
+    const { amount, moneyTransferToAccount } = req.body;
+    const findAccount = await accountModel.findOne({
+      userId: moneyTransferToAccount,
+    });
+    if (!findAccount) {
+      res.status(401).json({
+        message: "Account is not present",
+      });
+      return;
+    }
+    const bal = await accountModel.findOne({
+      userId: moneyTransferFromAccount,
+    });
+
+    if (amount > bal.balance.toString()) {
+      res.status(401).json({
+        message: "Not sufficient balance",
+      });
+      return;
+    }
+
+    await accountModel.updateOne(
+      {
+        userId: req.userId,
+      },
+      {
+        $inc: {
+          balance: -amount,
+        },
+      }
+    );
+
+    await accountModel.updateOne(
+      {
+        userId: moneyTransferToAccount,
+      },
+      {
+        $inc: {
+          balance: amount,
+        },
+      }
+    );
+
+    res.status(200).json({
+      message: "transfer successfull",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 export default router;
