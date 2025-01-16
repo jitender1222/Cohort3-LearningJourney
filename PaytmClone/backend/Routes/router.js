@@ -4,6 +4,7 @@ import { accountModel, userModel } from "../Db/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { uservalidation } from "../Middleware/authMiddleware.js";
+import mongoose from "mongoose";
 
 const router = Router();
 
@@ -164,20 +165,28 @@ router.get("/userBalance", uservalidation, async (req, res) => {
 
 router.post("/transferMoney", uservalidation, async (req, res) => {
   try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     const moneyTransferFromAccount = req.userId;
     const { amount, moneyTransferToAccount } = req.body;
-    const findAccount = await accountModel.findOne({
-      userId: moneyTransferToAccount,
-    });
+    const findAccount = await accountModel
+      .findOne({
+        userId: moneyTransferToAccount,
+      })
+      .session(session);
+
     if (!findAccount) {
       res.status(401).json({
         message: "Account is not present",
       });
       return;
     }
-    const bal = await accountModel.findOne({
-      userId: moneyTransferFromAccount,
-    });
+    const bal = await accountModel
+      .findOne({
+        userId: moneyTransferFromAccount,
+      })
+      .session(session);
 
     if (amount > bal.balance.toString()) {
       res.status(401).json({
@@ -186,32 +195,40 @@ router.post("/transferMoney", uservalidation, async (req, res) => {
       return;
     }
 
-    await accountModel.updateOne(
-      {
-        userId: req.userId,
-      },
-      {
-        $inc: {
-          balance: -amount,
+    await accountModel
+      .updateOne(
+        {
+          userId: req.userId,
         },
-      }
-    );
+        {
+          $inc: {
+            balance: -amount,
+          },
+        }
+      )
+      .session(session);
 
-    await accountModel.updateOne(
-      {
-        userId: moneyTransferToAccount,
-      },
-      {
-        $inc: {
-          balance: amount,
+    await accountModel
+      .updateOne(
+        {
+          userId: moneyTransferToAccount,
         },
-      }
-    );
+        {
+          $inc: {
+            balance: amount,
+          },
+        }
+      )
+      .session(session);
 
+    await session.commitTransaction();
+    session.endSession();
     res.status(200).json({
       message: "transfer successfull",
     });
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     console.log(error);
   }
 });
