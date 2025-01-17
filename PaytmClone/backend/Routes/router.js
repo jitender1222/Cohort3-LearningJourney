@@ -23,7 +23,6 @@ router.post("/signup", async (req, res) => {
         ),
     });
     const userSignupSuccess = userSignup.safeParse(req.body);
-    console.log(userSignupSuccess);
     if (!userSignupSuccess.success) {
       res.status(401).json({
         message: "Incorrect Format",
@@ -126,6 +125,16 @@ router.put("/updateUserInfo", uservalidation, async (req, res) => {
   res.status(200).json({
     message: "User updated successfully",
     updateUserInfo,
+  });
+});
+
+// all Users
+
+router.get("/allUsers", async (req, res) => {
+  const users = await userModel.find({});
+  res.status(200).json({
+    message: "All users in the database",
+    users,
   });
 });
 
