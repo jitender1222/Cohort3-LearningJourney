@@ -21,6 +21,7 @@ const Signup = () => {
       );
       console.log(response);
       if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
         toast.success("User SignIn Successfully", {
           autoClose: 3000,
           closeOnClick: true,

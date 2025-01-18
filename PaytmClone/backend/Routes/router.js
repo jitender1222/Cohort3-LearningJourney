@@ -130,29 +130,57 @@ router.put("/updateUserInfo", uservalidation, async (req, res) => {
 
 // all Users
 
-router.get("/allUsers", async (req, res) => {
-  const users = await userModel.find({});
-  res.status(200).json({
-    message: "All users in the database",
-    users,
-  });
-});
+// router.get("/allUsers", uservalidation, async (req, res) => {
+//   const userId = req.userId;
+//   const name = await userModel.findById(userId);
+//   // const balance = await accountModel.find({ userId: userId });
+//   // console.log(balance[0].balance);
+//   const users = await userModel.find({});
+//   res.status(200).json({
+//     message: "All users in the database",
+//     users,
+//     name: name.username,
+//   });
+// });
 
-// find user
+// search user
 
 router.get("/allUser", uservalidation, async (req, res) => {
-  const filter = req.query.filter || "";
-  console.log(filter);
-  const user = await userModel.find({
-    $or: [
-      {
-        username: { $regex: filter },
-      },
-    ],
-  });
-  res.json({
-    users: user,
-  });
+  try {
+    // Fetch current user's data
+    const currentUser = await userModel.findById(req.userId);
+    if (!currentUser) {
+      return res.status(404).json({ message: "Current user not found" });
+    }
+
+    // Fetch current user's account balance
+    const accountBalance = await accountModel.findOne({ userId: req.userId });
+    const balance = accountBalance ? accountBalance.balance : 0;
+
+    // Get filter query for username
+    const filter = req.query.showData || "";
+
+    // Fetch all users except the current user
+    const users = await userModel.find({
+      _id: { $ne: req.userId }, // Exclude the current user
+      username: { $regex: filter, $options: "i" }, // Filter by username (case-insensitive)
+    });
+
+    // If no users are found
+    if (!users) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    // Respond with users, current user name, and balance
+    res.json({
+      users,
+      name: currentUser.username,
+      balance,
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 // get user balance
