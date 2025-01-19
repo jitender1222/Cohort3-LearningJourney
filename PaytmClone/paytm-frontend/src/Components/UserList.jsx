@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserList = () => {
   const [data, setData] = useState([]);
+  console.log(data);
   const [showData, setShowData] = useState(data);
   const [name, setName] = useState();
   const [bal, setBalance] = useState();
+  const navigate = useNavigate();
 
   const loadAllUsers = async () => {
     const res = await axios.get(
@@ -63,7 +66,17 @@ const UserList = () => {
                         <span>{items.username}</span>
                       </div>
                       <div>
-                        <button className="bg-black p-2 text-white rounded-lg">
+                        <button
+                          onClick={() => {
+                            navigate(
+                              "/sendmoney?id=" +
+                                items._id +
+                                "&name=" +
+                                items.username
+                            );
+                          }}
+                          className="bg-black p-2 text-white rounded-lg"
+                        >
                           Send Money
                         </button>
                       </div>
