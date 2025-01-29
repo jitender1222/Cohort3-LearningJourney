@@ -1,5 +1,5 @@
 {
-  "name": "@latest",
+  "name": "excali-draw",
   "private": true,
   "scripts": {
     "build": "turbo build",
